@@ -1,12 +1,31 @@
 # Compressor e Conversor de Vídeo e Imagem
 
-App local para **comprimir vídeos sem perda visível de qualidade** e **converter vídeos e imagens entre formatos**. Roda no seu computador, com uma interface no navegador; nenhum arquivo é enviado para a internet.
+App para **comprimir vídeos sem perda visível de qualidade** e **converter vídeos e imagens entre formatos**. Funciona direto no navegador ou instalado no seu computador; nenhum arquivo é enviado para a internet.
 
-- **Backend:** Python + [FastAPI](https://fastapi.tiangolo.com/)
+- **Backend (versão local):** Python + [FastAPI](https://fastapi.tiangolo.com/)
 - **Vídeo:** [FFmpeg](https://ffmpeg.org/) (H.264, H.265/HEVC, AV1, VP9)
 - **Imagem:** [Pillow](https://python-pillow.org/) (JPG, PNG, WebP, AVIF, GIF, BMP, TIFF)
 
-## Requisitos
+## Duas versões
+
+| | Versão no navegador (`web/`) | Versão local (`app/`) |
+|---|---|---|
+| Instalação | Nenhuma: abra **<https://lkscov3r.github.io/compressor-conversor/>** | Python + FFmpeg |
+| Velocidade em vídeos | Bem mais lenta: ~45 s para 5 s de vídeo 720p (FFmpeg em WebAssembly, uma thread) | Rápida (usa todos os núcleos) |
+| Tamanho máximo de vídeo | Em torno de 1 GB (limite de memória do navegador) | Sem limite prático |
+| Codecs de vídeo | H.264 (e VP8 para WebM) | H.264, H.265, AV1 (e VP9 para WebM) |
+
+Nas duas, os arquivos são processados no seu computador e nunca são enviados para um servidor.
+
+### Versão no navegador
+
+É uma página estática em `web/`, publicada no GitHub Pages pelo workflow `.github/workflows/pages.yml` a cada push na `main`. Vídeos são processados com o [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm), cujo núcleo (~32 MB) é baixado do jsDelivr na primeira vez que um vídeo é aberto. Imagens JPG, WebP e AVIF são geradas pelo próprio navegador (AVIF só aparece nos navegadores que sabem gerá-lo); PNG, GIF, BMP e TIFF passam pelo ffmpeg.wasm. Diferente da versão local, os metadados EXIF das fotos não são mantidos.
+
+**Ativar o GitHub Pages (uma vez só):** no repositório, abra *Settings → Pages* e em *Build and deployment → Source* escolha **GitHub Actions**. O próximo push na `main` (ou *Actions → Publicar versão do navegador → Run workflow*) publica o site.
+
+Para testar a página no seu computador: `python -m http.server 8080 -d web` e abra <http://127.0.0.1:8080> (abrir o `index.html` direto do disco não funciona, porque o navegador bloqueia o Worker do FFmpeg).
+
+## Requisitos (versão local)
 
 1. **Python 3.10 ou mais recente**: <https://www.python.org/downloads/>
 2. **FFmpeg** (só é necessário para vídeos; imagens funcionam sem ele):
@@ -16,7 +35,7 @@ App local para **comprimir vídeos sem perda visível de qualidade** e **convert
 
    Confira com `ffmpeg -version`.
 
-## Como rodar
+## Como rodar (versão local)
 
 ```bash
 git clone https://github.com/lkscov3r/compressor-conversor.git

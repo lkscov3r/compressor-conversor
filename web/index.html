@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compressor e Conversor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Compressor e Conversor</h1>
+      <p class="sub">Vídeos e imagens processados aqui mesmo no navegador. Nenhum arquivo sai do seu computador.</p>
+    </header>
+
+    <div id="engine" class="warning" hidden></div>
+
+    <section class="card">
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab active" data-op="compress" role="tab">Comprimir</button>
+        <button type="button" class="tab" data-op="convert" role="tab">Converter</button>
+      </div>
+
+      <label id="dropzone" class="dropzone">
+        <input id="file-input" type="file" multiple hidden>
+        <strong>Arraste arquivos aqui</strong>
+        <span>ou clique para escolher</span>
+        <small id="accepted"></small>
+      </label>
+
+      <div class="options">
+        <div class="field" data-show="compress">
+          <label for="level">Nível de compressão</label>
+          <select id="level">
+            <option value="alta">Alta qualidade (visualmente sem perdas)</option>
+            <option value="equilibrada">Equilibrada</option>
+            <option value="maxima">Máxima compressão</option>
+          </select>
+        </div>
+        <div class="field" data-show="convert">
+          <label for="video-format">Vídeos para</label>
+          <select id="video-format"></select>
+        </div>
+        <div class="field" data-show="convert">
+          <label for="image-format">Imagens para</label>
+          <select id="image-format"></select>
+        </div>
+        <div class="field" data-show="convert">
+          <label for="convert-level">Qualidade (quando precisar recodificar)</label>
+          <select id="convert-level">
+            <option value="alta">Alta</option>
+            <option value="equilibrada">Equilibrada</option>
+            <option value="maxima">Menor arquivo</option>
+          </select>
+        </div>
+      </div>
+      <p class="hint" id="hint"></p>
+    </section>
+
+    <section id="jobs"></section>
+
+    <p class="footer">
+      Vídeos usam o <a href="https://github.com/ffmpegwasm/ffmpeg.wasm" target="_blank" rel="noopener">ffmpeg.wasm</a>
+      (cerca de 32 MB, baixados só na primeira vez). No navegador o processamento é mais lento que na
+      <a href="https://github.com/lkscov3r/compressor-conversor#como-rodar-versão-local" target="_blank" rel="noopener">versão local</a>
+      e vídeos acima de ~1 GB podem não caber na memória.
+    </p>
+  </main>
+
+  <template id="job-template">
+    <article class="job">
+      <div class="job-head">
+        <span class="name"></span>
+        <span class="state"></span>
+      </div>
+      <div class="bar"><div class="fill"></div></div>
+      <div class="job-foot">
+        <span class="sizes"></span>
+        <a class="download button" hidden>Baixar</a>
+      </div>
+    </article>
+  </template>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
