@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Compressor e Conversor</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <header>
+      <h1>Compressor e Conversor</h1>
+      <p class="sub">Vídeos e imagens, processados no seu computador. Nada é enviado para a internet.</p>
+    </header>
+
+    <div id="ffmpeg-warning" class="warning" hidden>
+      FFmpeg não foi encontrado. Imagens funcionam normalmente, mas para vídeos instale o FFmpeg (veja o README) e reinicie o app.
+    </div>
+
+    <section class="card">
+      <div class="tabs" role="tablist">
+        <button type="button" class="tab active" data-op="compress" role="tab">Comprimir</button>
+        <button type="button" class="tab" data-op="convert" role="tab">Converter</button>
+      </div>
+
+      <label id="dropzone" class="dropzone">
+        <input id="file-input" type="file" multiple hidden>
+        <strong>Arraste arquivos aqui</strong>
+        <span>ou clique para escolher</span>
+        <small id="accepted"></small>
+      </label>
+
+      <div class="options">
+        <div class="field" data-show="compress">
+          <label for="level">Nível de compressão</label>
+          <select id="level">
+            <option value="alta">Alta qualidade (visualmente sem perdas)</option>
+            <option value="equilibrada">Equilibrada</option>
+            <option value="maxima">Máxima compressão</option>
+          </select>
+        </div>
+        <div class="field" data-show="compress">
+          <label for="codec">Codec de vídeo</label>
+          <select id="codec">
+            <option value="h265">H.265 / HEVC (menor arquivo)</option>
+            <option value="h264">H.264 (máxima compatibilidade)</option>
+            <option value="av1">AV1 (ainda menor, mais lento)</option>
+          </select>
+        </div>
+        <div class="field" data-show="convert">
+          <label for="video-format">Vídeos para</label>
+          <select id="video-format"></select>
+        </div>
+        <div class="field" data-show="convert">
+          <label for="image-format">Imagens para</label>
+          <select id="image-format"></select>
+        </div>
+        <div class="field" data-show="convert">
+          <label for="convert-level">Qualidade (quando precisar recodificar)</label>
+          <select id="convert-level">
+            <option value="alta">Alta</option>
+            <option value="equilibrada">Equilibrada</option>
+            <option value="maxima">Menor arquivo</option>
+          </select>
+        </div>
+        <label class="check" data-show="convert">
+          <input type="checkbox" id="lossless"> Imagens sem perdas (PNG, WebP, AVIF)
+        </label>
+      </div>
+      <p class="hint" id="hint"></p>
+    </section>
+
+    <section id="jobs"></section>
+  </main>
+
+  <template id="job-template">
+    <article class="job">
+      <div class="job-head">
+        <span class="name"></span>
+        <span class="state"></span>
+      </div>
+      <div class="bar"><div class="fill"></div></div>
+      <div class="job-foot">
+        <span class="sizes"></span>
+        <a class="download button" hidden>Baixar</a>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
